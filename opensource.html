@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CortexOS — the fully open-source, MIT-licensed AI operating system. Privacy-first, local-first, zero telemetry. Run enterprise-grade AI on your own hardware." />
+  <meta name="keywords" content="CortexOS, open source AI, local LLM, self-hosted AI, privacy AI, MIT license, Ollama, vLLM, llama.cpp" />
+  <meta property="og:title" content="CortexOS — Open Source AI Operating System" />
+  <meta property="og:description" content="Privacy-first, local-first AI OS. No telemetry. No cloud dependency. Run everything on your own hardware." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://cortexcloud.online/opensource.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CortexOS — Open Source AI OS" />
+  <meta name="twitter:description" content="MIT licensed. 100% local. Zero telemetry. Run CortexOS on your hardware." />
+  <title>CortexOS — Open Source AI Operating System | CortexCloud</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── OSS Page Extras ── */
+    .oss-hero {
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,255,159,0.12) 0%, transparent 70%);
+    }
+    .oss-hero .hero-title {
+      font-size: clamp(3rem, 8vw, 6rem);
+    }
+    .arch-card {
+      background: rgba(0,255,159,0.04);
+      border: 1px solid rgba(0,255,159,0.15);
+      border-radius: 16px;
+      padding: 28px;
+    }
+    .arch-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: rgba(0,229,255,0.08);
+      border: 1px solid rgba(0,229,255,0.2);
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #00E5FF;
+      font-family: var(--font-mono);
+      margin-bottom: 16px;
+    }
+    .two-col-text {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    .feature-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .feature-card-sm {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 14px;
+      padding: 22px;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    }
+    .feature-card-sm:hover {
+      border-color: rgba(0,255,159,0.3);
+      box-shadow: 0 0 24px rgba(0,255,159,0.15);
+      transform: translateY(-3px);
+    }
+    .feature-card-sm .card-icon-sm {
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+    }
+    .feature-card-sm h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+    .feature-card-sm p {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+    .req-badges {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+    .req-badge {
+      padding: 8px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+    }
+    .community-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .community-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 20px;
+      padding: 36px 28px;
+      text-align: center;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    }
+    .community-card:hover {
+      border-color: rgba(0,255,159,0.25);
+      box-shadow: 0 0 30px rgba(0,255,159,0.1);
+      transform: translateY(-4px);
+    }
+    .community-card .cc-icon {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .community-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+    .community-card p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .nav-link-active {
+      color: #00FF9F !important;
+    }
+    /* Hero stats bar */
+    .hero-stats-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-top: 52px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .hero-stat {
+      flex: 1;
+      padding: 20px 24px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat .stat-val {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #00FF9F;
+      font-family: var(--font-mono);
+      line-height: 1;
+      display: block;
+    }
+    .hero-stat .stat-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 4px;
+      display: block;
+    }
+    /* Install command inline */
+    .hero-install {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(0,255,159,0.2);
+      border-radius: 10px;
+      padding: 0;
+      margin: 28px auto 0;
+      max-width: 600px;
+      overflow: hidden;
+    }
+    .hero-install code {
+      flex: 1;
+      padding: 14px 18px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #00FF9F;
+      background: transparent;
+      border: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .hero-copy-btn {
+      padding: 14px 18px;
+      background: rgba(0,255,159,0.08);
+      border: none;
+      border-left: 1px solid rgba(0,255,159,0.15);
+      color: #00FF9F;
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .hero-copy-btn:hover { background: rgba(0,255,159,0.18); }
+    /* About section */
+    .about-text-col p {
+      font-size: 0.96rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 18px;
+    }
+    .about-text-col p:last-child { margin-bottom: 0; }
+    .stack-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .stack-badge {
+      padding: 5px 12px;
+      background: rgba(0,229,255,0.06);
+      border: 1px solid rgba(0,229,255,0.18);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #00E5FF;
+      font-family: var(--font-mono);
+    }
+    .arch-card-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .arch-card h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+    .arch-card p {
+      font-size: 0.83rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    /* Tech stack section */
+    .tech-stack-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    .tech-items-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .tech-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 10px;
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .tech-chip:hover {
+      border-color: rgba(0,255,159,0.3);
+      box-shadow: 0 0 16px rgba(0,255,159,0.1);
+    }
+    .tech-chip .tc-icon { font-size: 1.1rem; }
+    /* Install tabs */
+    .oss-install-section {
+      background: rgba(0,255,159,0.02);
+      border-top: 1px solid rgba(0,255,159,0.07);
+      border-bottom: 1px solid rgba(0,255,159,0.07);
+    }
+    .install-tabs-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .install-tab-btns {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      justify-content: center;
+    }
+    .itab-btn {
+      padding: 8px 20px;
+      background: transparent;
+      border: 1px solid var(--border-card);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .itab-btn.active,
+    .itab-btn:hover {
+      border-color: #00FF9F;
+      color: #00FF9F;
+      background: rgba(0,255,159,0.06);
+    }
+    .itab-panel {
+      display: none;
+    }
+    .itab-panel.active {
+      display: block;
+    }
+    .itab-code {
+      background: #0a0e14;
+      border: 1px solid rgba(0,255,159,0.18);
+      border-radius: 12px;
+      padding: 24px 28px;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      color: #00FF9F;
+      line-height: 1.7;
+      white-space: pre;
+      overflow-x: auto;
+    }
+    /* Final CTA section */
+    .oss-final-cta {
+      background: radial-gradient(ellipse 70% 50% at 50% 100%, rgba(0,255,159,0.08) 0%, transparent 70%);
+      border-top: 1px solid rgba(0,255,159,0.08);
+      text-align: center;
+    }
+    .final-cta-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+    /* Community glow */
+    .community-section {
+      position: relative;
+    }
+    .community-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,255,159,0.4), transparent);
+    }
+    .community-card .cc-cta {
+      display: inline-block;
+      margin-top: 18px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #00FF9F;
+      text-decoration: none;
+      font-family: var(--font-mono);
+      border-bottom: 1px solid rgba(0,255,159,0.3);
+      padding-bottom: 1px;
+      transition: border-color 0.2s;
+    }
+    .community-card .cc-cta:hover { border-color: #00FF9F; }
+    .community-github-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 40px;
+      padding: 14px 32px;
+      background: #00FF9F;
+      color: #030508;
+      font-weight: 800;
+      font-size: 0.95rem;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: box-shadow 0.25s, transform 0.2s;
+    }
+    .community-github-btn:hover {
+      box-shadow: 0 0 32px rgba(0,255,159,0.45);
+      transform: translateY(-2px);
+    }
+    /* Section padding override for consistency */
+    .section-padded {
+      padding: 100px 0;
+    }
+    /* Hero hero-badge style */
+    .oss-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(0,255,159,0.08);
+      border: 1px solid rgba(0,255,159,0.25);
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #00FF9F;
+      font-family: var(--font-mono);
+      letter-spacing: 0.04em;
+      margin-bottom: 28px;
+    }
+    .oss-badge::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #00FF9F;
+      box-shadow: 0 0 8px #00FF9F;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero-cta-row {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 36px;
+    }
+    .btn-github {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      background: linear-gradient(135deg, #FF6B35 0%, #FF4500 100%);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.92rem;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: box-shadow 0.25s, transform 0.2s;
+      border: none;
+    }
+    .btn-github:hover {
+      box-shadow: 0 0 28px rgba(255,107,53,0.5);
+      transform: translateY(-2px);
+    }
+    /* responsive */
+    @media (max-width: 1024px) {
+      .feature-grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .two-col-text { grid-template-columns: 1fr; }
+      .tech-stack-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .feature-grid-4 { grid-template-columns: 1fr 1fr; }
+      .community-grid { grid-template-columns: 1fr; }
+      .hero-stats-bar { flex-wrap: wrap; }
+      .hero-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .hero-stat:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       NAVBAR
+  ═══════════════════════════════════════════ -->
+  <header class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" id="nav-logo-link" aria-label="CortexCloud Home">
+        <span class="nav-logo-text">Cortex<span class="logo-accent">Cloud</span></span>
+      </a>
+      <nav class="nav-links" id="nav-links" aria-label="Main Navigation">
+        <a href="index.html#discover" class="nav-link" id="nav-discover">Discover</a>
+        <a href="agent-management-platform.html" class="nav-link" id="nav-enterprise">Enterprise</a>
+        <a href="opensource.html" class="nav-link nav-link-active" id="nav-oss">Open Source</a>
+        <a href="docs.html" class="nav-link" id="nav-docs">Docs</a>
+        <a href="resources.html" class="nav-link" id="nav-resources">Resources</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="agent-management-platform.html#demo" class="btn-demo" id="btn-demo-nav">Request Demo</a>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <a href="index.html#discover" class="mobile-link">Discover</a>
+    <a href="agent-management-platform.html" class="mobile-link">Enterprise</a>
+    <a href="opensource.html" class="mobile-link">Open Source</a>
+    <a href="docs.html" class="mobile-link">Docs</a>
+    <a href="resources.html" class="mobile-link">Resources</a>
+    <div class="mobile-actions">
+      <a href="agent-management-platform.html#demo" class="btn-demo">Request Demo</a>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ═══════════════════════════════════════════
+         SECTION 1: HERO
+    ═══════════════════════════════════════════ -->
+    <section class="hero oss-hero" id="oss-hero" aria-label="CortexOS Hero">
+      <div class="container" style="text-align:center;">
+
+        <div class="oss-badge">MIT Licensed — Fully Open Source</div>
+
+        <h1 class="hero-title title-gradient">
+          CortexOS
+        </h1>
+        <p class="hero-title" style="font-size:clamp(1.6rem,4vw,2.8rem);font-weight:800;color:var(--text-primary);margin-top:6px;line-height:1.2;">
+          Self-Hosted AI Operating System
+        </p>
+
+        <p class="hero-sub section-sub" style="max-width:640px;margin:22px auto 0;">
+          Privacy-first, local-first. No telemetry. No cloud dependency.<br />
+          Run everything on your own hardware.
+        </p>
+
+        <div class="hero-cta-row">
+          <a href="https://github.com/jonahthan433/CortexOS_" target="_blank" rel="noopener" class="btn-github" aria-label="Star CortexOS on GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            ⭐ Star on GitHub
+          </a>
+          <a href="#install" class="btn-outline-green" aria-label="Install CortexOS">Install CortexOS</a>
+        </div>
+
+        <!-- Inline install command -->
+        <div class="hero-install" role="group" aria-label="Quick install command">
+          <code id="hero-cmd">curl -fsSL https://cortexcloud.online/install.sh | bash</code>
+          <button class="hero-copy-btn" id="hero-copy-btn" aria-label="Copy install command" onclick="(function(b){var t=b.textContent;document.getElementById('hero-cmd').textContent&&navigator.clipboard.writeText('curl -fsSL https://cortexcloud.online/install.sh | bash').then(function(){b.textContent='Copied!';setTimeout(function(){b.textContent=t;},1800);})})(this)">Copy</button>
+        </div>
+
+        <!-- Stats bar -->
+        <div class="hero-stats-bar" aria-label="Quick facts">
+          <div class="hero-stat">
+            <span class="stat-val">MIT</span>
+            <span class="stat-label">License</span>
+          </div>
+          <div class="hero-stat">
+            <span class="stat-val">100%</span>
+            <span class="stat-label">Local</span>
+          </div>
+          <div class="hero-stat">
+            <span class="stat-val">0</span>
+            <span class="stat-label">Telemetry</span>
+          </div>
+          <div class="hero-stat">
+            <span class="stat-val">PWA</span>
+            <span class="stat-label">Ready</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SECTION 2: WHAT IS CORTEXOS
+    ═══════════════════════════════════════════ -->
+    <section class="section-padded" id="about-cortexos" aria-labelledby="about-title">
+      <div class="container">
+
+        <div style="text-align:center;margin-bottom:60px;">
+          <span class="section-tag">Open Source Core</span>
+          <h2 class="section-title" id="about-title">
+            The AI OS that runs on <span class="title-gradient">YOUR hardware</span>
+          </h2>
+        </div>
+
+        <div class="two-col-text">
+          <!-- Left: Text explanation -->
+          <div class="about-text-col">
+            <p>
+              CortexOS is a fully open-source, privacy-first AI operating system designed to run entirely on your own hardware. Built for developers, researchers, and teams who refuse to send sensitive data to third-party cloud providers — CortexOS brings enterprise-grade AI capabilities behind your firewall, under your control.
+            </p>
+            <p>
+              Local-first inference is at the heart of CortexOS. It natively integrates with <strong style="color:var(--text-primary)">Ollama</strong>, <strong style="color:var(--text-primary)">vLLM</strong>, and <strong style="color:var(--text-primary)">llama.cpp</strong> — giving you full flexibility to choose your inference backend. Run Llama 3, Mistral, Gemma, Phi, DeepSeek, and dozens of other open models locally with zero cold-start overhead.
+            </p>
+            <p>
+              CortexOS ships in two modes: <strong style="color:var(--text-primary)">Hybrid Offline</strong> for fully air-gapped environments, and <strong style="color:var(--text-primary)">Full Stack</strong> for users who want the complete CortexCloud experience on their own server. When local models aren't available or you need broader coverage, an optional <strong style="color:var(--text-primary)">OpenRouter fallback</strong> routes requests through your configured API key — always optional, always transparent.
+            </p>
+          </div>
+
+          <!-- Right: Architecture info card -->
+          <div>
+            <div class="arch-card">
+              <div class="arch-badge">⚙ Architecture</div>
+              <div class="arch-card-label">System Mode</div>
+              <h4>Hybrid Client-Server</h4>
+              <p>React PWA frontend communicates with a local FastAPI backend. All data stays in your SQLite database. Vector memory is stored on-device. No outbound connections unless you explicitly configure them.</p>
+
+              <div class="arch-badge" style="background:rgba(0,255,159,0.07);border-color:rgba(0,255,159,0.2);color:#00FF9F;">📱 PWA Ready</div>
+              <div class="arch-card-label" style="margin-top:4px;">Install as Desktop or Mobile App</div>
+              <p>CortexOS is a Progressive Web App — install it from your browser on any device. Works offline for cached conversations. No app store required.</p>
+
+              <div class="arch-card-label">Tech Stack</div>
+              <div class="stack-badges">
+                <span class="stack-badge">React + TypeScript</span>
+                <span class="stack-badge">FastAPI</span>
+                <span class="stack-badge">SQLite</span>
+                <span class="stack-badge">Docker</span>
+                <span class="stack-badge">Ollama</span>
+                <span class="stack-badge">vLLM</span>
+                <span class="stack-badge">llama.cpp</span>
+                <span class="stack-badge">JWT Auth</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SECTION 3: FEATURE MODULES GRID
+    ═══════════════════════════════════════════ -->
+    <section class="section-padded" id="features" aria-labelledby="features-title" style="border-top:1px solid rgba(255,255,255,0.04);">
+      <div class="container">
+
+        <div style="text-align:center;margin-bottom:56px;">
+          <span class="section-tag">14+ Modules</span>
+          <h2 class="section-title" id="features-title">
+            Everything you need, <span class="title-gradient">nothing you don't</span>
+          </h2>
+          <p class="section-sub" style="max-width:560px;margin:14px auto 0;">
+            CortexOS ships as a collection of self-contained modules. Enable what you need. Disable what you don't. Every module runs entirely on-prem.
+          </p>
+        </div>
+
+        <div class="feature-grid-4">
+
+          <!-- 1 -->
+          <div class="feature-card-sm card-reveal" aria-label="Chat Interface module">
+            <div class="card-icon-sm">💬</div>
+            <h4>Chat Interface</h4>
+            <p>Branching conversations with full history, model switching mid-thread, and real-time streaming responses. Context-aware and lightning fast.</p>
+          </div>
+
+          <!-- 2 -->
+          <div class="feature-card-sm card-reveal" aria-label="Autonomous Agents module">
+            <div class="card-icon-sm">🤖</div>
+            <h4>Autonomous Agents</h4>
+            <p>Multi-step tool-using agents with planning, persistent memory, and self-correction loops. Agents that actually finish the job.</p>
+          </div>
+
+          <!-- 3 -->
+          <div class="feature-card-sm card-reveal" aria-label="Agent Cookbook module">
+            <div class="card-icon-sm">📚</div>
+            <h4>Agent Cookbook</h4>
+            <p>50+ pre-built agent recipes. Deploy research assistants, writing agents, and triage bots instantly with one click — no config required.</p>
+          </div>
+
+          <!-- 4 -->
+          <div class="feature-card-sm card-reveal" aria-label="Deep Research module">
+            <div class="card-icon-sm">🔬</div>
+            <h4>Deep Research</h4>
+            <p>Multi-hop reasoning chains that crawl the web, synthesize findings, and cite sources autonomously. Hours of research in minutes.</p>
+          </div>
+
+          <!-- 5 -->
+          <div class="feature-card-sm card-reveal" aria-label="Documents and Copilot module">
+            <div class="card-icon-sm">📄</div>
+            <h4>Documents + Copilot</h4>
+            <p>Rich text editor with inline AI powers: summarize, draft from scratch, rewrite tone, translate language — all without leaving the doc.</p>
+          </div>
+
+          <!-- 6 -->
+          <div class="feature-card-sm card-reveal" aria-label="Memory and Skills module">
+            <div class="card-icon-sm">🧠</div>
+            <h4>Memory &amp; Skills</h4>
+            <p>Persistent vector memory per user and per agent. Reusable skill modules shared across workflows. Agents that remember and improve.</p>
+          </div>
+
+          <!-- 7 -->
+          <div class="feature-card-sm card-reveal" aria-label="Email Integration module">
+            <div class="card-icon-sm">📧</div>
+            <h4>Email Integration</h4>
+            <p>SMTP/IMAP support. Agents can read, draft, send, and triage your email automatically. Smart labeling and priority inbox built in.</p>
+          </div>
+
+          <!-- 8 -->
+          <div class="feature-card-sm card-reveal" aria-label="Calendar CalDAV module">
+            <div class="card-icon-sm">📅</div>
+            <h4>Calendar (CalDAV)</h4>
+            <p>CalDAV sync with any calendar server. Let AI schedule meetings, block focus time, manage recurring events, and send invites on your behalf.</p>
+          </div>
+
+          <!-- 9 -->
+          <div class="feature-card-sm card-reveal" aria-label="Tasks and Projects module">
+            <div class="card-icon-sm">✅</div>
+            <h4>Tasks &amp; Projects</h4>
+            <p>Kanban-style task management with AI-powered prioritization, deadline prediction, and intelligent delegation across your team or agents.</p>
+          </div>
+
+          <!-- 10 -->
+          <div class="feature-card-sm card-reveal" aria-label="Scheduled Automations module">
+            <div class="card-icon-sm">⚡</div>
+            <h4>Scheduled Automations</h4>
+            <p>Natural language cron. Just say "Every Monday at 9am, send the weekly digest." CortexOS handles the scheduling, execution, and retries.</p>
+          </div>
+
+          <!-- 11 -->
+          <div class="feature-card-sm card-reveal" aria-label="RL Training module">
+            <div class="card-icon-sm">🎓</div>
+            <h4>RL Training</h4>
+            <p>Fine-tune models on your private data using RLHF — entirely on-prem. No data leaves your infrastructure. Improve models on your specific domain.</p>
+          </div>
+
+          <!-- 12 -->
+          <div class="feature-card-sm card-reveal" aria-label="Themes module">
+            <div class="card-icon-sm">🎨</div>
+            <h4>Themes</h4>
+            <p>Cyberpunk neon, Jank Mode, Dark Pro, and more. The UI is fully customizable. Because enterprise software doesn't have to look like 1998.</p>
+          </div>
+
+          <!-- 13 -->
+          <div class="feature-card-sm card-reveal" aria-label="Privacy Controls module">
+            <div class="card-icon-sm">🔒</div>
+            <h4>Privacy Controls</h4>
+            <p>No telemetry, no analytics, no external calls. Air-gap compatible. Every network call is logged and configurable. You own the data. Full stop.</p>
+          </div>
+
+          <!-- 14 -->
+          <div class="feature-card-sm card-reveal" aria-label="Docker Deploy module">
+            <div class="card-icon-sm">🐳</div>
+            <h4>Docker Deploy</h4>
+            <p>One-command Docker Compose setup. Or run bare-metal with <code style="color:#00FF9F;font-family:var(--font-mono)">./start.sh</code>. Works on Linux, macOS, and Windows WSL2 out of the box.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SECTION 4: TECH STACK
+    ═══════════════════════════════════════════ -->
+    <section class="section-padded" id="tech-stack" aria-labelledby="tech-title" style="border-top:1px solid rgba(255,255,255,0.04);">
+      <div class="container">
+
+        <div style="text-align:center;margin-bottom:60px;">
+          <span class="section-tag">Built With</span>
+          <h2 class="section-title" id="tech-title">
+            Modern stack, <span class="title-gradient">boring in the best way</span>
+          </h2>
+          <p class="section-sub" style="max-width:520px;margin:14px auto 0;">
+            No exotic dependencies. No lock-in. Technologies your team already knows, assembled into something exceptional.
+          </p>
+        </div>
+
+        <div class="tech-stack-grid">
+          <!-- Left: tech chips -->
+          <div>
+            <div class="tech-items-wrap">
+              <div class="tech-chip"><span class="tc-icon">⚛️</span> React 18 + TypeScript</div>
+              <div class="tech-chip"><span class="tc-icon">🐍</span> FastAPI + Python 3.11</div>
+              <div class="tech-chip"><span class="tc-icon">🗄️</span> SQLite + Vector Store</div>
+              <div class="tech-chip"><span class="tc-icon">🦙</span> Ollama / vLLM / llama.cpp</div>
+              <div class="tech-chip"><span class="tc-icon">🐳</span> Docker + Compose</div>
+              <div class="tech-chip"><span class="tc-icon">📱</span> Progressive Web App</div>
+              <div class="tech-chip"><span class="tc-icon">🔑</span> JWT Auth</div>
+              <div class="tech-chip"><span class="tc-icon">🌐</span> OpenRouter Fallback</div>
+            </div>
+
+            <div style="margin-top:36px;">
+              <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.75;margin-bottom:16px;">
+                The full stack is built for longevity. React 18 with TypeScript gives you a battle-tested frontend. FastAPI delivers blazing-fast async Python APIs. SQLite keeps the storage layer simple, embedded, and zero-maintenance — with a vector extension for semantic search.
+              </p>
+              <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.75;">
+                Every component is replaceable. Don't want SQLite? Swap in Postgres. Prefer another inference backend? Plug it in. CortexOS is modular by design.
+              </p>
+            </div>
+          </div>
+
+          <!-- Right: docker-compose code block -->
+          <div>
+            <div class="terminal-window" role="figure" aria-label="docker-compose.yml snippet">
+              <div class="terminal-header">
+                <span class="t-dot" style="background:#ff5f56"></span>
+                <span class="t-dot" style="background:#ffbd2e;margin:0 6px"></span>
+                <span class="t-dot" style="background:#27c93f"></span>
+                <span style="margin-left:auto;font-family:var(--font-mono);font-size:0.7rem;color:var(--text-secondary);">docker-compose.yml</span>
+              </div>
+              <div class="terminal-body" style="font-size:0.82rem;">
+                <div class="t-line"><span class="t-hl" style="color:#00E5FF;">version</span><span style="color:var(--text-secondary);">: </span><span style="color:#00FF9F;">'3.8'</span></div>
+                <div class="t-line"><span class="t-hl" style="color:#00E5FF;">services</span><span style="color:var(--text-secondary);">:</span></div>
+                <div class="t-line" style="padding-left:1.5em;"><span class="t-hl" style="color:#FFD700;">frontend</span><span style="color:var(--text-secondary);">:</span></div>
+                <div class="t-line" style="padding-left:3em;"><span style="color:var(--text-secondary);">build</span>: <span style="color:#00FF9F;">./frontend</span></div>
+                <div class="t-line" style="padding-left:3em;"><span style="color:var(--text-secondary);">ports</span>: <span style="color:#00E5FF;">['3000:3000']</span></div>
+                <div class="t-line" style="padding-left:1.5em;"><span class="t-hl" style="color:#FFD700;">backend</span><span style="color:var(--text-secondary);">:</span></div>
+                <div class="t-line" style="padding-left:3em;"><span style="color:var(--text-secondary);">build</span>: <span style="color:#00FF9F;">./backend</span></div>
+                <div class="t-line" style="padding-left:3em;"><span style="color:var(--text-secondary);">ports</span>: <span style="color:#00E5FF;">['8000:8000']</span></div>
+                <div class="t-line" style="padding-left:1.5em;"><span class="t-hl" style="color:#FFD700;">db</span><span style="color:var(--text-secondary);">:</span></div>
+                <div class="t-line" style="padding-left:3em;"><span style="color:var(--text-secondary);">image</span>: <span style="color:#00FF9F;">sqlite-web</span></div>
+                <div class="t-line" style="margin-top:12px;"><span class="t-ok">✓</span> <span class="t-msg">All services healthy</span></div>
+                <div class="t-line"><span class="t-ok">✓</span> <span class="t-msg">Inference backend connected</span></div>
+                <div class="t-line"><span class="t-ok">✓</span> <span class="t-msg">CortexOS ready at <span style="color:#00FF9F;">localhost:3000</span></span> <span class="t-cursor t-blink">█</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SECTION 5: INSTALLATION
+    ═══════════════════════════════════════════ -->
+    <section class="section-padded oss-install-section" id="install" aria-labelledby="install-title">
+      <div class="container" style="text-align:center;">
+
+        <span class="section-tag">Quick Deploy</span>
+        <h2 class="section-title" id="install-title">
+          Up and running in <span class="title-gradient">60 seconds</span>
+        </h2>
+        <p class="section-sub" style="max-width:500px;margin:14px auto 32px;">
+          Pick your preferred install method. All paths lead to the same result: CortexOS running on your machine in under a minute.
+        </p>
+
+        <div class="install-tabs-wrap">
+          <div class="install-tab-btns" role="tablist" aria-label="Installation methods">
+            <button class="itab-btn active" role="tab" aria-selected="true" aria-controls="itab-curl" id="tab-curl" onclick="switchInstallTab('curl', this)">curl install</button>
+            <button class="itab-btn" role="tab" aria-selected="false" aria-controls="itab-docker" id="tab-docker" onclick="switchInstallTab('docker', this)">Docker Compose</button>
+            <button class="itab-btn" role="tab" aria-selected="false" aria-controls="itab-source" id="tab-source" onclick="switchInstallTab('source', this)">From Source</button>
+          </div>
+
+          <div id="itab-curl" class="itab-panel active" role="tabpanel" aria-labelledby="tab-curl">
+            <pre class="itab-code" aria-label="curl install command">curl -fsSL https://cortexcloud.online/install.sh | bash</pre>
+          </div>
+          <div id="itab-docker" class="itab-panel" role="tabpanel" aria-labelledby="tab-docker">
+            <pre class="itab-code" aria-label="Docker Compose install commands">git clone https://github.com/jonahthan433/CortexOS_
+cd CortexOS_
+docker compose up -d</pre>
+          </div>
+          <div id="itab-source" class="itab-panel" role="tabpanel" aria-labelledby="tab-source">
+            <pre class="itab-code" aria-label="From source install commands">git clone https://github.com/jonahthan433/CortexOS_
+cd CortexOS_
+./start.sh</pre>
+          </div>
+        </div>
+
+        <div class="req-badges" role="list" aria-label="System requirements">
+          <div class="req-badge" role="listitem">🐍 Python 3.10+</div>
+          <div class="req-badge" role="listitem">🐳 Docker 24+</div>
+          <div class="req-badge" role="listitem">💾 4GB RAM min</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SECTION 6: COMMUNITY
+    ═══════════════════════════════════════════ -->
+    <section class="section-padded community-section" id="community" aria-labelledby="community-title">
+      <div class="container" style="text-align:center;">
+
+        <span class="section-tag">Open Community</span>
+        <h2 class="section-title" id="community-title">
+          Join the <span class="title-gradient">Community</span>
+        </h2>
+        <p class="section-sub" style="max-width:520px;margin:14px auto 52px;">
+          CortexOS is built in public. Every feature, bug, and architectural decision happens in the open. Come build with us.
+        </p>
+
+        <div class="community-grid">
+
+          <!-- GitHub -->
+          <div class="community-card card-reveal">
+            <span class="cc-icon" role="img" aria-label="GitHub">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00FF9F" stroke-width="1.5"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            </span>
+            <h3>GitHub</h3>
+            <p>Star the repo, fork it, open issues, and submit pull requests. The entire project — frontend, backend, docs — lives in one open repository.</p>
+            <a href="https://github.com/jonahthan433/CortexOS_" target="_blank" rel="noopener" class="cc-cta" aria-label="View CortexOS on GitHub">View Repository →</a>
+          </div>
+
+          <!-- Discord -->
+          <div class="community-card card-reveal">
+            <span class="cc-icon" role="img" aria-label="Discord">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#7289DA" stroke-width="1.5"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.03.052a19.9 19.9 0 0 0 5.993 3.03.077.077 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+            </span>
+            <h3>Discord</h3>
+            <p>Join the CortexOS Discord to get help, share what you're building, discuss new features, and connect with other self-hosters and AI builders.</p>
+            <a href="#discord" class="cc-cta" aria-label="Join the CortexOS Discord">Join Server →</a>
+          </div>
+
+          <!-- Contribute -->
+          <div class="community-card card-reveal">
+            <span class="cc-icon" role="img" aria-label="Contribute">🛠️</span>
+            <h3>Contribute</h3>
+            <p>Submit a new module, fix a bug, improve the docs, or translate the UI. Contributions of all sizes are welcome. Check the contributing guide to get started.</p>
+            <a href="#contributing" class="cc-cta" aria-label="Read the contributing guide">Contributing Guide →</a>
+          </div>
+
+        </div>
+
+        <a href="https://github.com/jonahthan433/CortexOS_" target="_blank" rel="noopener" class="community-github-btn" aria-label="Star CortexOS on GitHub">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          ⭐ Star CortexOS on GitHub
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SECTION 7: FINAL CTA — ENTERPRISE
+    ═══════════════════════════════════════════ -->
+    <section class="section-padded oss-final-cta" id="enterprise-cta" aria-labelledby="final-cta-title">
+      <div class="container" style="max-width:720px;margin:0 auto;text-align:center;">
+
+        <span class="section-tag">Enterprise</span>
+        <h2 class="section-title" id="final-cta-title">
+          Enterprise on top of <span class="title-gradient">CortexOS</span>
+        </h2>
+        <p class="section-sub" style="max-width:580px;margin:18px auto 0;font-size:1rem;line-height:1.75;">
+          CortexCloud Enterprise takes CortexOS to production scale. Add SSO, RBAC, multi-tenant isolation, audit logging, SLA-backed support, and a dedicated deployment team — all running on the same open-source core you already control. Zero lock-in. Just more capability, when you need it.
+        </p>
+
+        <div class="final-cta-btns">
+          <a href="agent-management-platform.html#demo" class="btn-cta-primary" aria-label="Request a CortexCloud Enterprise demo">Request Demo</a>
+          <a href="agent-management-platform.html" class="btn-cta-secondary" aria-label="Explore the CortexCloud platform">Explore Platform</a>
+        </div>
+
+        <p style="margin-top:28px;font-size:0.8rem;color:var(--text-secondary);font-family:var(--font-mono);">
+          CortexOS is always free. Always MIT. Enterprise features are additive, never paywalled from the open-source core.
+        </p>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════ -->
+  <footer class="site-footer" id="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" aria-label="CortexCloud Home">
+            <span class="nav-logo-text">Cortex<span class="logo-accent">Cloud</span></span>
+          </a>
+          <p class="footer-tagline">Enterprise AI. Your hardware. Your rules.</p>
+          <div class="footer-social">
+            <a href="https://github.com/jonahthan433/CortexOS_" class="social-link" target="_blank" rel="noopener" aria-label="GitHub">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-links-group">
+          <h4>Product</h4>
+          <a href="index.html#discover">Discover</a>
+          <a href="index.html#build">Build &amp; Integrate</a>
+          <a href="index.html#orchestrate">Orchestrate</a>
+          <a href="index.html#observe">Observe</a>
+          <a href="index.html#pricing">Pricing</a>
+        </div>
+        <div class="footer-links-group">
+          <h4>Open Source</h4>
+          <a href="https://github.com/jonahthan433/CortexOS_" target="_blank" rel="noopener">CortexOS GitHub</a>
+          <a href="#docs">Documentation</a>
+          <a href="#changelog">Changelog</a>
+          <a href="#contributing">Contributing</a>
+        </div>
+        <div class="footer-links-group">
+          <h4>Company</h4>
+          <a href="#about">About</a>
+          <a href="#blog">Blog</a>
+          <a href="mailto:enterprise@cortexcloud.online">Contact</a>
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 CortexCloud. Built on <a href="https://github.com/jonahthan433/CortexOS_" target="_blank" rel="noopener">CortexOS</a> — MIT License.</p>
+        <p class="footer-note">Privacy-first. No telemetry. No tracking. Your data stays yours.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script>
+    // ── Install Tab Switcher ──
+    function switchInstallTab(name, btn) {
+      // Deactivate all
+      document.querySelectorAll('.itab-btn').forEach(function(b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      document.querySelectorAll('.itab-panel').forEach(function(p) {
+        p.classList.remove('active');
+      });
+      // Activate target
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      var panel = document.getElementById('itab-' + name);
+      if (panel) panel.classList.add('active');
+    }
+  </script>
+</body>
+</html>

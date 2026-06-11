@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resources &amp; Insights | CortexCloud</title>
+  <meta name="description" content="Learn how enterprises and power users are building local-first, privacy-safe AI with CortexOS and CortexCloud." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* =====================================================
+       RESOURCES PAGE CUSTOM LAYOUT & STYLES
+       ===================================================== */
+    .resources-hero {
+      background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0,255,159,0.08) 0%, transparent 60%);
+      padding: 140px 0 70px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    
+    /* Filter Bar */
+    .filter-bar-wrap {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 48px;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 8px 22px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-card);
+      border-radius: 999px;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .filter-btn:hover {
+      border-color: rgba(0, 255, 159, 0.35);
+      color: #00FF9F;
+      box-shadow: 0 0 12px rgba(0, 255, 159, 0.1);
+    }
+    .filter-btn.active {
+      background: #00FF9F;
+      color: #030508;
+      border-color: #00FF9F;
+      font-weight: 700;
+      box-shadow: 0 0 20px rgba(0, 255, 159, 0.25);
+    }
+
+    /* Resources Grid */
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 80px;
+    }
+    
+    /* Card Styles */
+    .res-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+      height: 100%;
+    }
+    .res-card:hover {
+      border-color: rgba(0, 255, 159, 0.25);
+      box-shadow: 0 0 30px rgba(0, 255, 159, 0.1);
+      transform: translateY(-4px);
+    }
+    .res-card-body {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .res-badge {
+      display: inline-flex;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-family: var(--font-mono);
+      margin-bottom: 16px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      width: fit-content;
+    }
+    .res-badge.case-studies {
+      background: rgba(0, 255, 159, 0.06);
+      border: 1px solid rgba(0, 255, 159, 0.18);
+      color: #00FF9F;
+    }
+    .res-badge.webinars {
+      background: rgba(0, 229, 255, 0.06);
+      border: 1px solid rgba(0, 229, 255, 0.18);
+      color: #00E5FF;
+    }
+    .res-badge.events {
+      background: rgba(255, 107, 53, 0.06);
+      border: 1px solid rgba(255, 107, 53, 0.18);
+      color: #FF6B35;
+    }
+    .res-badge.blog {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-secondary);
+    }
+    
+    .res-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.35;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+    .res-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+    
+    .res-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      margin-top: auto;
+    }
+    .res-link {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #00FF9F;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 0.2s;
+    }
+    .res-card:hover .res-link {
+      gap: 10px;
+    }
+
+    /* Grid filter animations */
+    .res-card.fade-out {
+      opacity: 0;
+      transform: scale(0.95);
+      display: none;
+    }
+    .res-card.fade-in {
+      display: flex;
+      animation: res-fade 0.3s forwards ease;
+    }
+    @keyframes res-fade {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Newsletter Section */
+    .newsletter-section {
+      background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(0,255,159,0.06) 0%, transparent 60%);
+      padding: 100px 0;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .newsletter-box {
+      max-width: 680px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 20px;
+      padding: 48px;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(0,255,159,0.05);
+    }
+    .news-form {
+      display: flex;
+      gap: 12px;
+      margin-top: 28px;
+      max-width: 500px;
+      margin-inline: auto;
+    }
+    .news-input {
+      flex: 1;
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .news-input:focus {
+      border-color: rgba(0,255,159,0.4);
+    }
+    .news-btn {
+      padding: 12px 24px;
+      background: #00FF9F;
+      color: #030508;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .news-btn:hover {
+      box-shadow: 0 0 20px rgba(0,255,159,0.4);
+      transform: translateY(-1px);
+    }
+
+    /* Helper styles */
+    .nav-link-active {
+      color: #00FF9F !important;
+    }
+
+    @media (max-width: 1024px) {
+      .resources-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 640px) {
+      .resources-grid {
+        grid-template-columns: 1fr;
+      }
+      .newsletter-box {
+        padding: 32px 24px;
+      }
+      .news-form {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .news-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" id="nav-logo-link" aria-label="CortexCloud Home">
+        <span class="nav-logo-text">Cortex<span class="logo-accent">Cloud</span></span>
+      </a>
+      <nav class="nav-links" id="nav-links" aria-label="Main Navigation">
+        <a href="index.html#discover" class="nav-link" id="nav-discover">Discover</a>
+        <a href="agent-management-platform.html" class="nav-link" id="nav-enterprise">Enterprise</a>
+        <a href="opensource.html" class="nav-link" id="nav-oss">Open Source</a>
+        <a href="docs.html" class="nav-link" id="nav-docs">Docs</a>
+        <a href="resources.html" class="nav-link nav-link-active" id="nav-resources">Resources</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="agent-management-platform.html#demo" class="btn-demo" id="btn-demo-nav">Request Demo</a>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <a href="index.html#discover" class="mobile-link">Discover</a>
+    <a href="agent-management-platform.html" class="mobile-link">Enterprise</a>
+    <a href="opensource.html" class="mobile-link">Open Source</a>
+    <a href="docs.html" class="mobile-link">Docs</a>
+    <a href="resources.html" class="mobile-link">Resources</a>
+    <div class="mobile-actions">
+      <a href="agent-management-platform.html#demo" class="btn-demo">Request Demo</a>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ============ HERO ============ -->
+    <section class="resources-hero">
+      <div class="container">
+        <div class="breadcrumb" style="justify-content:center; font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono); margin-bottom:14px;">
+          <a href="index.html" style="color:var(--text-muted); text-decoration:none;">CortexCloud</a>
+          <span style="margin: 0 6px; color:rgba(255,255,255,0.2);">›</span>
+          <span style="color:#00FF9F;">Resources</span>
+        </div>
+        <h1 class="hero-title title-gradient" style="font-size:clamp(2.2rem, 5vw, 3.8rem); font-weight:900; margin-bottom:14px; letter-spacing:-0.03em;">
+          Resources &amp; Insights
+        </h1>
+        <p class="hero-sub" style="max-width:580px; margin-inline:auto; font-size:1.02rem; color:var(--text-secondary); line-height:1.6;">
+          Learn how enterprises and power users are building with CortexOS and CortexCloud.
+        </p>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar-wrap" role="group" aria-label="Filter resources by category">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="case-studies">Case Studies</button>
+          <button class="filter-btn" data-filter="webinars">Webinars</button>
+          <button class="filter-btn" data-filter="events">Events</button>
+          <button class="filter-btn" data-filter="blog">Blog</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ RESOURCES GRID ============ -->
+    <section class="resources-grid-section">
+      <div class="container">
+        
+        <div class="resources-grid" id="resources-grid">
+
+          <!-- Case Study 1 -->
+          <div class="res-card card-reveal" data-category="case-studies">
+            <div class="res-card-body">
+              <span class="res-badge case-studies">Case Study</span>
+              <h3 class="res-title">HelixBio: Local RAG for 100+ Researchers</h3>
+              <p class="res-desc">Discover how HelixBio scaled local vector search and context retrieval to their secure labs, cutting analysis queues by 70% with zero data leaks.</p>
+              <div class="res-meta">
+                <span>5 Min Read</span>
+                <a href="#case-studies" class="res-link">Read Case Study →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Webinar 1 -->
+          <div class="res-card card-reveal" data-category="webinars">
+            <div class="res-card-body">
+              <span class="res-badge webinars">Webinar</span>
+              <h3 class="res-title">Up &amp; Running with Local LLMs</h3>
+              <p class="res-desc">An engineering walkthrough on connecting Ollama, vLLM clusters, and custom calendars. Learn best practices for local hardware orchestration.</p>
+              <div class="res-meta">
+                <span>45 Min Video</span>
+                <a href="#webinars" class="res-link">Watch Recording →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Event 1 -->
+          <div class="res-card card-reveal" data-category="events">
+            <div class="res-card-body">
+              <span class="res-badge events">Event</span>
+              <h3 class="res-title">CortexCon 2026: Self-Hosted AI</h3>
+              <p class="res-desc">Join 1,000+ developers and enterprise security directors in SF or virtually for our annual summit covering local inference, agent routing, and privacy.</p>
+              <div class="res-meta">
+                <span>Oct 14-15, 2026</span>
+                <a href="#events" class="res-link">Register Now →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Blog 1 -->
+          <div class="res-card card-reveal" data-category="blog">
+            <div class="res-card-body">
+              <span class="res-badge blog">Blog</span>
+              <h3 class="res-title">Why Local Inference Wins in Enterprise</h3>
+              <p class="res-desc">An in-depth analysis of the economics of local GPU clusters versus public model APIs, highlighting long-term token cost dynamics and SLA guarantees.</p>
+              <div class="res-meta">
+                <span>June 9, 2026</span>
+                <a href="#blog" class="res-link">Read Article →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Case Study 2 -->
+          <div class="res-card card-reveal" data-category="case-studies">
+            <div class="res-card-body">
+              <span class="res-badge case-studies">Case Study</span>
+              <h3 class="res-title">Arcturus Defense: Secure Enclaves</h3>
+              <p class="res-desc">See how Arcturus deployed a fully offline cluster of CortexOS agents to automate document processing in air-gapped high-security operations.</p>
+              <div class="res-meta">
+                <span>8 Min Read</span>
+                <a href="#case-studies" class="res-link">Read Case Study →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Blog 2 -->
+          <div class="res-card card-reveal" data-category="blog">
+            <div class="res-card-body">
+              <span class="res-badge blog">Blog</span>
+              <h3 class="res-title">Ollama vs vLLM: Performance Benchmarks</h3>
+              <p class="res-desc">We load-tested common model engines (Llama-3, DeepSeek) on standard server hardware to evaluate throughput, concurrency, and cold-start latencies.</p>
+              <div class="res-meta">
+                <span>May 24, 2026</span>
+                <a href="#blog" class="res-link">Read Article →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Case Study 3 -->
+          <div class="res-card card-reveal" data-category="case-studies">
+            <div class="res-card-body">
+              <span class="res-badge case-studies">Case Study</span>
+              <h3 class="res-title">Solstice Legal: Compliance Audits</h3>
+              <p class="res-desc">Automating contract reviews using self-hosted agents, saving hundreds of attorney hours while maintaining strict data custody alignment.</p>
+              <div class="res-meta">
+                <span>6 Min Read</span>
+                <a href="#case-studies" class="res-link">Read Case Study →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Webinar 2 -->
+          <div class="res-card card-reveal" data-category="webinars">
+            <div class="res-card-body">
+              <span class="res-badge webinars">Webinar</span>
+              <h3 class="res-title">Finetuning via RLHF On-Premises</h3>
+              <p class="res-desc">Learn how to build local human-in-the-loop loops to train models using the CortexOS reinforcement learning dashboard without sending weights to cloud systems.</p>
+              <div class="res-meta">
+                <span>July 21, 2026</span>
+                <a href="#webinars" class="res-link">Save Seat →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Event 2 -->
+          <div class="res-card card-reveal" data-category="events">
+            <div class="res-card-body">
+              <span class="res-badge events">Event</span>
+              <h3 class="res-title">Workshop: Building Custom Skills</h3>
+              <p class="res-desc">A hands-on coding session demonstrating how to write reusable tools and APIs in Python that your agents can execute dynamically at runtime.</p>
+              <div class="res-meta">
+                <span>July 8, 2026</span>
+                <a href="#events" class="res-link">Register Now →</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ NEWSLETTER ============ -->
+    <section class="newsletter-section">
+      <div class="container">
+        <div class="newsletter-box card-reveal">
+          <span class="section-tag" style="margin-bottom:12px;">Newsletter</span>
+          <h2 style="font-size:1.8rem; font-weight:800; color:var(--text-primary); margin-bottom:8px;">Stay informed on Local AI</h2>
+          <p style="font-size:0.9rem; color:var(--text-secondary); line-height:1.6; max-width:480px; margin-inline:auto;">
+            Get monthly technical walkthroughs, local inference benchmarks, and release summaries. No spam. Unsubscribe anytime.
+          </p>
+          <form class="news-form" action="#" method="POST" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
+            <input type="email" class="news-input" placeholder="work.email@company.com" required aria-label="Work Email" />
+            <button type="submit" class="news-btn">Subscribe</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer" id="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" aria-label="CortexCloud Home">
+            <span class="nav-logo-text">Cortex<span class="logo-accent">Cloud</span></span>
+          </a>
+          <p class="footer-tagline">Enterprise AI. Your hardware. Your rules.</p>
+          <div class="footer-social">
+            <a href="https://github.com/jonahthan433/CortexOS_" class="social-link" target="_blank" rel="noopener" aria-label="GitHub">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-links-group">
+          <h4>Product</h4>
+          <a href="index.html#discover">Discover</a>
+          <a href="index.html#build">Build &amp; Integrate</a>
+          <a href="index.html#orchestrate">Orchestrate</a>
+          <a href="index.html#observe">Observe</a>
+          <a href="index.html#pricing">Pricing</a>
+        </div>
+        <div class="footer-links-group">
+          <h4>Open Source</h4>
+          <a href="https://github.com/jonahthan433/CortexOS_" target="_blank" rel="noopener">CortexOS GitHub</a>
+          <a href="docs.html">Documentation</a>
+          <a href="#changelog">Changelog</a>
+          <a href="#contributing">Contributing</a>
+        </div>
+        <div class="footer-links-group">
+          <h4>Company</h4>
+          <a href="#about">About</a>
+          <a href="#blog">Blog</a>
+          <a href="mailto:enterprise@cortexcloud.online">Contact</a>
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 CortexCloud. Built on <a href="https://github.com/jonahthan433/CortexOS_" target="_blank" rel="noopener">CortexOS</a> — MIT License.</p>
+        <p class="footer-note">Privacy-first. No telemetry. No tracking. Your data stays yours.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script>
+    // =====================================================
+    // RESOURCES PAGE INTERACTIVE CATEGORY FILTERING
+    // =====================================================
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.res-card');
+
+    if (filterButtons.length && cards.length) {
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Deactivate all buttons
+          filterButtons.forEach(b => b.classList.remove('active'));
+          // Activate current button
+          btn.classList.add('active');
+
+          const category = btn.getAttribute('data-filter');
+
+          cards.forEach(card => {
+            const cardCat = card.getAttribute('data-category');
+            if (category === 'all' || cardCat === category) {
+              card.classList.remove('fade-out');
+              card.classList.add('fade-in');
+            } else {
+              card.classList.remove('fade-in');
+              card.classList.add('fade-out');
+            }
+          });
+        });
+      });
+    }
+  </script>
+</body>
+</html>

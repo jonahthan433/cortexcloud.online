@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CortexOS Documentation | CortexCloud</title>
+  <meta name="description" content="Comprehensive guides for installing, configuring, using, and extending CortexOS—the self-hosted AI operating system." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* =====================================================
+       DOCS PAGE CUSTOM LAYOUT & STYLES
+       ===================================================== */
+    .docs-hero {
+      background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0,255,159,0.08) 0%, transparent 60%);
+      padding: 120px 0 60px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .docs-container {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 48px;
+      align-items: start;
+      padding: 60px 0 100px;
+    }
+    
+    /* Sidebar Navigation */
+    .docs-sidebar {
+      position: sticky;
+      top: 100px;
+      max-height: calc(100vh - 140px);
+      overflow-y: auto;
+      padding-right: 16px;
+    }
+    .docs-sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .docs-sidebar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .docs-sidebar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 99px;
+    }
+    .docs-sidebar::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 255, 159, 0.4);
+    }
+    .sidebar-group {
+      margin-bottom: 28px;
+    }
+    .sidebar-group-title {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      font-family: var(--font-mono);
+    }
+    .sidebar-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .sidebar-link {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s, padding-left 0.2s;
+      display: block;
+      padding: 4px 0;
+      border-left: 2px solid transparent;
+      padding-left: 0;
+    }
+    .sidebar-link:hover {
+      color: #00FF9F;
+      padding-left: 8px;
+    }
+    .sidebar-link.active {
+      color: #00FF9F;
+      font-weight: 600;
+      border-left-color: #00FF9F;
+      padding-left: 10px;
+    }
+
+    /* Mobile Accordion Dropdown (collapsible sidebar) */
+    .mobile-docs-nav {
+      display: none;
+      margin-bottom: 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .mobile-nav-header {
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      user-select: none;
+    }
+    .mobile-nav-header::after {
+      content: '▼';
+      font-size: 0.75rem;
+      color: var(--green);
+      transition: transform 0.2s;
+    }
+    .mobile-docs-nav.open .mobile-nav-header::after {
+      transform: rotate(180deg);
+    }
+    .mobile-nav-content {
+      display: none;
+      padding: 10px 20px 20px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      max-height: 380px;
+      overflow-y: auto;
+    }
+    .mobile-docs-nav.open .mobile-nav-content {
+      display: block;
+    }
+
+    /* Main Docs Content Area */
+    .docs-content {
+      min-width: 0; /* Prevents overflow inside flex/grid items */
+    }
+    .docs-content section {
+      margin-bottom: 80px;
+      scroll-margin-top: 100px;
+    }
+    .docs-content section:last-child {
+      margin-bottom: 0;
+    }
+    
+    /* Search Bar Mock */
+    .docs-search-wrap {
+      position: relative;
+      margin-bottom: 48px;
+      max-width: 500px;
+    }
+    .docs-search-input {
+      width: 100%;
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 14px 16px 14px 44px;
+      color: var(--text-primary);
+      font-size: 0.92rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .docs-search-input:focus {
+      border-color: rgba(0,255,159,0.35);
+      box-shadow: 0 0 16px rgba(0,255,159,0.1);
+    }
+    .docs-search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    /* Typography & Core Elements inside Docs Content */
+    .docs-content h1 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+    }
+    .docs-content h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-top: 48px;
+      margin-bottom: 18px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .docs-content h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 32px;
+      margin-bottom: 12px;
+    }
+    .docs-content p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 18px;
+    }
+    .docs-content ul, .docs-content ol {
+      padding-left: 24px;
+      margin-bottom: 20px;
+      color: var(--text-secondary);
+    }
+    .docs-content li {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 8px;
+    }
+    
+    /* Code Blocks */
+    .docs-content code {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #00FF9F;
+      background: rgba(0,255,159,0.06);
+      padding: 3px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(0,255,159,0.12);
+    }
+    .docs-content pre {
+      background: #06090e;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 22px 26px;
+      overflow-x: auto;
+      margin-bottom: 24px;
+    }
+    .docs-content pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: #00FF9F;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    /* Info Alerts */
+    .docs-alert {
+      display: flex;
+      gap: 16px;
+      background: rgba(0, 229, 255, 0.04);
+      border: 1px solid rgba(0, 229, 255, 0.15);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .docs-alert.tip {
+      background: rgba(0, 255, 159, 0.03);
+      border-color: rgba(0, 255, 159, 0.15);
+    }
+    .docs-alert.warning {
+      background: rgba(255, 90, 95, 0.04);
+      border-color: rgba(255, 90, 95, 0.15);
+    }
+    .alert-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1; }
+    .alert-content p { font-size: 0.88rem; margin: 0; line-height: 1.6; }
+    .alert-content pstrong { color: var(--text-primary); }
+
+    /* Module Description Cards Grid */
+    .docs-modules-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 24px;
+      margin-bottom: 32px;
+    }
+    .docs-mod-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 10px;
+      padding: 20px;
+      transition: border-color 0.2s;
+    }
+    .docs-mod-card:hover {
+      border-color: rgba(0,255,159,0.2);
+    }
+    .docs-mod-card h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .docs-mod-card p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Tech Stack & Connectors Tables */
+    .docs-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 32px;
+      font-size: 0.9rem;
+    }
+    .docs-table th, .docs-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .docs-table th {
+      font-weight: 700;
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.02);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .docs-table td {
+      color: var(--text-secondary);
+    }
+    .docs-table tr:hover td {
+      background: rgba(255,255,255,0.01);
+    }
+
+    /* Navigation helper link style */
+    .nav-link-active {
+      color: #00FF9F !important;
+    }
+
+    @media (max-width: 1024px) {
+      .docs-container {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding-top: 32px;
+      }
+      .docs-sidebar {
+        display: none;
+      }
+      .mobile-docs-nav {
+        display: block;
+      }
+      .docs-modules-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" id="nav-logo-link" aria-label="CortexCloud Home">
+        <span class="nav-logo-text">Cortex<span class="logo-accent">Cloud</span></span>
+      </a>
+      <nav class="nav-links" id="nav-links" aria-label="Main Navigation">
+        <a href="index.html#discover" class="nav-link" id="nav-discover">Discover</a>
+        <a href="agent-management-platform.html" class="nav-link" id="nav-enterprise">Enterprise</a>
+        <a href="opensource.html" class="nav-link" id="nav-oss">Open Source</a>
+        <a href="docs.html" class="nav-link nav-link-active" id="nav-docs">Docs</a>
+        <a href="resources.html" class="nav-link" id="nav-resources">Resources</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="agent-management-platform.html#demo" class="btn-demo" id="btn-demo-nav">Request Demo</a>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <a href="index.html#discover" class="mobile-link">Discover</a>
+    <a href="agent-management-platform.html" class="mobile-link">Enterprise</a>
+    <a href="opensource.html" class="mobile-link">Open Source</a>
+    <a href="docs.html" class="mobile-link">Docs</a>
+    <a href="resources.html" class="mobile-link">Resources</a>
+    <div class="mobile-actions">
+      <a href="agent-management-platform.html#demo" class="btn-demo">Request Demo</a>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ============ HERO ============ -->
+    <section class="docs-hero">
+      <div class="container" style="text-align:center;">
+        <div class="breadcrumb" style="justify-content:center; font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono); margin-bottom:14px;">
+          <a href="index.html" style="color:var(--text-muted); text-decoration:none;">CortexCloud</a>
+          <span style="margin: 0 6px; color:rgba(255,255,255,0.2);">›</span>
+          <span style="color:#00FF9F;">Documentation</span>
+        </div>
+        <h1 class="hero-title title-gradient" style="font-size:clamp(2.2rem, 5vw, 3.8rem); font-weight:900; margin-bottom:14px; letter-spacing:-0.03em;">
+          CortexOS Documentation
+        </h1>
+        <p class="hero-sub" style="max-width:580px; margin-inline:auto; font-size:1.02rem; color:var(--text-secondary); line-height:1.6;">
+          Comprehensive guides for installing, configuring, using, and extending your self-hosted AI Operating System.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ MAIN CONTENT AREA ============ -->
+    <div class="container">
+      <div class="docs-container">
+
+        <!-- Desktop Sidebar -->
+        <aside class="docs-sidebar" aria-label="Documentation Navigation">
+          <div class="sidebar-group">
+            <div class="sidebar-group-title">Getting Started</div>
+            <ul class="sidebar-links">
+              <li><a href="#quick-install" class="sidebar-link active">Quick Install</a></li>
+              <li><a href="#docker-deploy" class="sidebar-link">Docker Setup</a></li>
+              <li><a href="#local-dev" class="sidebar-link">Local Development</a></li>
+            </ul>
+          </div>
+          <div class="sidebar-group">
+            <div class="sidebar-group-title">Core Features</div>
+            <ul class="sidebar-links">
+              <li><a href="#modular-features" class="sidebar-link">14 Module Guides</a></li>
+              <li><a href="#stack-arch" class="sidebar-link">Stack &amp; Architecture</a></li>
+            </ul>
+          </div>
+          <div class="sidebar-group">
+            <div class="sidebar-group-title">Connecting Backends</div>
+            <ul class="sidebar-links">
+              <li><a href="#backend-ollama" class="sidebar-link">Ollama Setup</a></li>
+              <li><a href="#backend-vllm" class="sidebar-link">vLLM Cluster</a></li>
+              <li><a href="#backend-caldav" class="sidebar-link">CalDAV Calendar</a></li>
+            </ul>
+          </div>
+          <div class="sidebar-group">
+            <div class="sidebar-group-title">Deployment</div>
+            <ul class="sidebar-links">
+              <li><a href="#deploy-scale" class="sidebar-link">Scaling Layout</a></li>
+              <li><a href="#deploy-airgapped" class="sidebar-link">Air-Gapped Config</a></li>
+            </ul>
+          </div>
+        </aside>
+
+        <!-- Mobile Navigation Accordion Selector -->
+        <nav class="mobile-docs-nav" id="mobile-docs-nav" aria-label="Mobile Documentation Navigation">
+          <div class="mobile-nav-header" id="mobile-nav-title">Browse Documentation Chapters</div>
+          <div class="mobile-nav-content">
+            <div style="font-weight: 800; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; font-family: var(--font-mono);">Getting Started</div>
+            <a href="#quick-install" class="mobile-link" style="display:block; padding:8px 0; color:var(--text-secondary); text-decoration:none; font-size:0.88rem;">Quick Install</a>
+            <a href="#docker-deploy" class="mobile-link" style="display:block; padding:8px 0; color:var(--text-secondary); text-decoration:none; font-size:0.88rem;">Docker Setup</a>
+            <a href="#local-dev" class="mobile-link" style="display:block; padding:8px 0; color:var(--text-secondary); text-decoration:none; font-size:0.88rem;">Local Development</a>
+
+            <div style="font-weight: 800; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-top: 16px; margin-bottom: 8px; font-family: var(--font-mono);">Core Features</div>
+            <a href="#modular-features" class="mobile-link" style="display:block; padding:8px 0; color:var(--text-secondary); text-decoration:none; font-size:0.88rem;">14 Module Guides</a>
+            <a href="#stack-arch" class="mobile-link" style="display:block; padding:8px 0; color:var(--text-secondary); text-decoration:none; font-size:0.88rem;">Stack &amp; Architecture</a>
+
+            <div style="font-weight: 800; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-top: 16px; margin-bottom: 8px; font-family: var(--font-mono);">Connecting Backends</div>
+            <a href="#backend-ollama" class="mobile-link" style="display:block; padding:8px 0; color:var(--text-secondary); text-decoration:none; font-size:0.88rem;">Ollama Setup</a>
+            <a href="#backend-vllm" class="mobile-link" style="display:block; padding:8px 0; color:var(--text-secondary); text-decoration:none; font-size:0.88rem;">vLLM Cluster</a>
+            <a href="#backend-caldav" class="mobile-link" style="display:block; padding:8px 0; color:var(--text-secondary); text-decoration:none; font-size:0.88rem;">CalDAV Calendar</a>
+
+            <div style="font-weight: 800; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-top: 16px; margin-bottom: 8px; font-family: var(--font-mono);">Deployment</div>
+            <a href="#deploy-scale" class="mobile-link" style="display:block; padding:8px 0; color:var(--text-secondary); text-decoration:none; font-size:0.88rem;">Scaling Layout</a>
+            <a href="#deploy-airgapped" class="mobile-link" style="display:block; padding:8px 0; color:var(--text-secondary); text-decoration:none; font-size:0.88rem;">Air-Gapped Config</a>
+          </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <article class="docs-content" id="docs-content">
+
+          <!-- Mock Search Bar -->
+          <div class="docs-search-wrap">
+            <span class="docs-search-icon" role="img" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </span>
+            <input type="text" class="docs-search-input" placeholder="Search documentation... (e.g. Ollama settings, Docker compose)" aria-label="Search documentation" />
+          </div>
+
+          <!-- SECTION: QUICK INSTALL -->
+          <section id="quick-install">
+            <h1>Quick Start Guide</h1>
+            <p>
+              CortexOS is designed to spin up on your local hardware in less than a minute. You only need a modern operating system (Linux, macOS, or Windows WSL2), a shell environment, and CPU or GPU resources.
+            </p>
+
+            <div class="docs-alert tip" role="alert">
+              <span class="alert-icon">💡</span>
+              <div class="alert-content">
+                <p><strong>Recommendation:</strong> For most users, running the <code>curl</code> installation script is the easiest way to download dependencies, set up local database files, and boot the application.</p>
+              </div>
+            </div>
+
+            <h2>One-Command curl Install</h2>
+            <p>Execute this command in your terminal. This downloads the installation bootstrapper, configures a virtual environment, checks for Ollama or local backends, and starts the services.</p>
+            
+            <pre><code>curl -fsSL https://cortexcloud.online/install.sh | bash</code></pre>
+
+            <p>
+              Once complete, the setup script launches the FastAPI server and React client, printing access endpoints to stdout.
+            </p>
+          </section>
+
+          <!-- SECTION: DOCKER SETUP -->
+          <section id="docker-deploy">
+            <h1>Docker Deployment</h1>
+            <p>
+              For servers, continuous deployment pipelines, or environments requiring sandboxing, you can boot CortexOS using Docker and Docker Compose.
+            </p>
+
+            <h2>Step-by-Step Instructions</h2>
+            <p>Clone the core repository and boot the Compose layout:</p>
+            
+            <pre><code># 1. Clone the open source repository
+git clone https://github.com/jonahthan433/CortexOS_
+
+# 2. Enter the project directory
+cd CortexOS_
+
+# 3. Spin up the containers in detached mode
+docker compose up -d</code></pre>
+
+            <p>
+              This command provisions three main isolated containers:
+            </p>
+            <ul>
+              <li><strong>Frontend (React Client):</strong> Served on port <code>3000</code></li>
+              <li><strong>Backend (FastAPI Server):</strong> Served on port <code>8000</code></li>
+              <li><strong>SQLite Manager:</strong> An embedded local sqlite database instance</li>
+            </ul>
+
+            <div class="docs-alert" role="alert">
+              <span class="alert-icon">ℹ️</span>
+              <div class="alert-content">
+                <p><strong>GPU Pass-Through:</strong> If you are planning to run local LLMs inside Docker on NVIDIA cards, ensure you have the <code>nvidia-container-toolkit</code> configured and set the GPU flags in your <code>docker-compose.yml</code>.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- SECTION: LOCAL DEVELOPMENT -->
+          <section id="local-dev">
+            <h1>Local Development Setup</h1>
+            <p>
+              If you want to contribute to the open-source codebase, build custom modules, or inspect API routes, you can set up the full bare-metal development stack.
+            </p>
+
+            <h2>System Requirements</h2>
+            <ul style="margin-bottom: 24px;">
+              <li>Python 3.10+</li>
+              <li>Node.js 18+ (and npm/yarn)</li>
+              <li>SQLite 3</li>
+            </ul>
+
+            <h2>Backend Setup</h2>
+            <pre><code>cd backend
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000</code></pre>
+
+            <h2>Frontend Setup</h2>
+            <pre><code>cd frontend
+npm install
+npm run dev -- --port 3000</code></pre>
+
+            <p>
+              The frontend features hot-module reloading and links to backend operations via API proxies.
+            </p>
+          </section>
+
+          <!-- SECTION: MODULES -->
+          <section id="modular-features">
+            <h1>Core Module Guides</h1>
+            <p>
+              CortexOS is fully modular. It ships with 14 foundational modules representing complete capabilities. Turn them on or off in the dashboard settings panel depending on hardware resources.
+            </p>
+
+            <div class="docs-modules-grid">
+              
+              <!-- 1 -->
+              <div class="docs-mod-card">
+                <h4>💬 1. Chat Interface</h4>
+                <p>Advanced chat with mid-thread model switching, streaming text, markdown parsing, and tree-like branching dialogs.</p>
+              </div>
+
+              <!-- 2 -->
+              <div class="docs-mod-card">
+                <h4>🤖 2. Autonomous Agents</h4>
+                <p>Goal-oriented executors equipped with self-correction feedback, tool-access parameters, and persistent memory states.</p>
+              </div>
+
+              <!-- 3 -->
+              <div class="docs-mod-card">
+                <h4>📚 3. Agent Cookbook</h4>
+                <p>A repository containing 50+ pre-configured templates for common workflows (reports, email parsing, triage, scrapers).</p>
+              </div>
+
+              <!-- 4 -->
+              <div class="docs-mod-card">
+                <h4>🔬 4. Deep Research</h4>
+                <p>Multi-hop agents that crawl pages, query vector stores, synthesize sources, and output complete annotated research digests.</p>
+              </div>
+
+              <!-- 5 -->
+              <div class="docs-mod-card">
+                <h4>⚖️ 5. Model Comparison</h4>
+                <p>Blind side-by-side prompt execution. Allows team members or scripts to grade model capabilities and compile leaderboard metrics.</p>
+              </div>
+
+              <!-- 6 -->
+              <div class="docs-mod-card">
+                <h4>📄 6. Documents &amp; Copilot</h4>
+                <p>Interactive writing environment with inline AI autocompletes, summaries, proofreading, and format conversion options.</p>
+              </div>
+
+              <!-- 7 -->
+              <div class="docs-mod-card">
+                <h4>🧠 7. Memory &amp; Skills</h4>
+                <p>A vector database mapping system. Gives agents private local recall storage and reusable script-like tools (skills).</p>
+              </div>
+
+              <!-- 8 -->
+              <div class="docs-mod-card">
+                <h4>📧 8. Email Integration</h4>
+                <p>Full support for SMTP/IMAP protocols. Read, write, and send email messages locally. Enables building triage workflows.</p>
+              </div>
+
+              <!-- 9 -->
+              <div class="docs-mod-card">
+                <h4>✅ 9. Notes &amp; Tasks</h4>
+                <p>Kanban interface linked directly to agents, allowing automated prioritization and assignment of tasks.</p>
+              </div>
+
+              <!-- 10 -->
+              <div class="docs-mod-card">
+                <h4>📅 10. Calendar (CalDAV)</h4>
+                <p>Sync support for standard CalDAV servers. Lets agents search schedules, coordinate meetings, and write appointments.</p>
+              </div>
+
+              <!-- 11 -->
+              <div class="docs-mod-card">
+                <h4>🔑 11. API Gateway</h4>
+                <p>OpenAPI endpoint control center, API key issuer, and detailed request tracing logging dashboard.</p>
+              </div>
+
+              <!-- 12 -->
+              <div class="docs-mod-card">
+                <h4>⚡ 12. Scheduled Automations</h4>
+                <p>Flexible background task runner. Trigger workflows using natural language expressions (e.g. "Every weekday at noon").</p>
+              </div>
+
+              <!-- 13 -->
+              <div class="docs-mod-card">
+                <h4>🎓 13. RL Training</h4>
+                <p>Private reinforcement learning control dashboard. Run local finetunes and save target weights in GGUF formats.</p>
+              </div>
+
+              <!-- 14 -->
+              <div class="docs-mod-card">
+                <h4>🎨 14. Themes &amp; Extras</h4>
+                <p>Premium cyberpunk interfaces, customizable Jank Mode, performance visualizer charts, and audio text-to-speech tools.</p>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- SECTION: ARCHITECTURE -->
+          <section id="stack-arch">
+            <h1>Stack &amp; Architecture</h1>
+            <p>
+              CortexOS utilizes a clean client-server architecture. On-premise reliability and modularity are the primary drivers of our design decisions.
+            </p>
+
+            <table class="docs-table" aria-label="System Architecture Stack">
+              <thead>
+                <tr>
+                  <th>Layer</th>
+                  <th>Technology Used</th>
+                  <th>Core Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Frontend</strong></td>
+                  <td>React 18 + TS (Progressive Web App)</td>
+                  <td>Interactive user dashboard, chat, files editor</td>
+                </tr>
+                <tr>
+                  <td><strong>Backend</strong></td>
+                  <td>FastAPI + Python 3.11</td>
+                  <td>Async API layer, tool controllers, agent pipelines</td>
+                </tr>
+                <tr>
+                  <td><strong>Database</strong></td>
+                  <td>SQLite + Vector Extensions</td>
+                  <td>Local data structures, history, user keys, vector memory</td>
+                </tr>
+                <tr>
+                  <td><strong>Sandboxing</strong></td>
+                  <td>Docker &amp; Linux Namespaces</td>
+                  <td>Secure sandboxed agent environment for file actions</td>
+                </tr>
+                <tr>
+                  <td><strong>Inference Backend</strong></td>
+                  <td>Ollama, vLLM, llama.cpp</td>
+                  <td>Local LLM execution engines</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h2>Visual Themes</h2>
+            <p>
+              The system supports multiple premium visual modes out of the box, including our default deep dark theme, a sleek cyberpunk interface, and a playful <strong>Jank Mode</strong> inspired by early terminal aesthetics. Swap themes on the fly inside the Settings panel.
+            </p>
+          </section>
+
+          <!-- SECTION: BACKENDS -->
+          <section id="backend-ollama">
+            <h1>Connecting Backends</h1>
+            <p>
+              CortexOS can delegate model queries to any inference backend. Learn how to configure local integrations.
+            </p>
+
+            <h2>1. Local Ollama Integration</h2>
+            <p>
+              By default, CortexOS auto-detects Ollama if it is running on the host system. The application queries Ollama's port <code>11434</code> automatically.
+            </p>
+            <p>If Ollama runs on a separate machine, update your environment configuration:</p>
+            <pre><code># edit backend/.env file
+OLLAMA_HOST=http://192.168.1.100:11434</code></pre>
+          </section>
+
+          <section id="backend-vllm">
+            <h1>vLLM Cluster Connection</h1>
+            <p>
+              For teams requiring high-throughput, distributed execution, CortexOS supports Open-AI compatible backends, specifically <strong>vLLM</strong>.
+            </p>
+            <p>Configure vLLM on your GPU server and point the client via the environment configurations:</p>
+            <pre><code># backend/.env
+OPENAI_API_BASE=http://gpu-cluster-ip:8000/v1
+OPENAI_API_KEY=token-key-if-applicable
+DEFAULT_MODEL=meta-llama/Meta-Llama-3-70B-Instruct</code></pre>
+          </section>
+
+          <section id="backend-caldav">
+            <h1>CalDAV Calendar Sync</h1>
+            <p>
+              Connect your calendar so scheduling agents can inspect times and schedule meetings. The CalDAV integration supports Google Calendar, Nextcloud, and Apple iCloud.
+            </p>
+            <p>Input credentials in your user Profile Settings panel:</p>
+            <table class="docs-table" aria-label="CalDAV parameters">
+              <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Description</th>
+                  <th>Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Server URL</strong></td>
+                  <td>The absolute path to your CalDAV collection</td>
+                  <td><code>https://nextcloud.corp.io/remote.php/dav/</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Username</strong></td>
+                  <td>Account identifier</td>
+                  <td><code>alex.reinholt</code></td>
+                </tr>
+                <tr>
+                  <td><strong>App Password</strong></td>
+                  <td>Unique API app token (recommended over master password)</td>
+                  <td><code>xxxx-xxxx-xxxx-xxxx</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- SECTION: DEPLOYMENT & SCALING -->
+          <section id="deploy-scale">
+            <h1>Deployment &amp; Scaling</h1>
+            <p>
+              CortexOS and CortexCloud are built to scale alongside your organization. Select the appropriate configuration layout.
+            </p>
+            <ul>
+              <li><strong>Solo Server:</strong> 1 CPU/GPU machine running Docker Compose. Simple, self-contained, low overhead.</li>
+              <li><strong>Enterprise Cluster (CortexCloud Platform):</strong> Distributed backend nodes, vLLM pooling, high-availability Postgres clusters, centralized Redis locks.</li>
+            </ul>
+          </section>
+
+          <section id="deploy-airgapped">
+            <h1>Air-Gapped Configurations</h1>
+            <p>
+              Regulated sectors (healthcare, government, banking) require complete network isolation. CortexOS can run 100% offline.
+            </p>
+            <h2>Requirements Checklist</h2>
+            <ol>
+              <li>Pre-downloaded GGUF or Model Weights (stored locally under <code>~/.ollama/models</code> or host directories).</li>
+              <li>Docker images exported to tar archives and transferred via safe physical media.</li>
+              <li>Configured offline RAG databases using local directory mappings.</li>
+            </ol>
+            <div class="docs-alert warning" role="alert">
+              <span class="alert-icon">⚠️</span>
+              <div class="alert-content">
+                <p><strong>Note:</strong> When offline, external features like the OpenRouter fallback will be automatically disabled, and all queries will throw warnings if local backends are unavailable.</p>
+              </div>
+            </div>
+          </section>
+
+        </article>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer" id="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" aria-label="CortexCloud Home">
+            <span class="nav-logo-text">Cortex<span class="logo-accent">Cloud</span></span>
+          </a>
+          <p class="footer-tagline">Enterprise AI. Your hardware. Your rules.</p>
+          <div class="footer-social">
+            <a href="https://github.com/jonahthan433/CortexOS_" class="social-link" target="_blank" rel="noopener" aria-label="GitHub">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-links-group">
+          <h4>Product</h4>
+          <a href="index.html#discover">Discover</a>
+          <a href="index.html#build">Build &amp; Integrate</a>
+          <a href="index.html#orchestrate">Orchestrate</a>
+          <a href="index.html#observe">Observe</a>
+          <a href="index.html#pricing">Pricing</a>
+        </div>
+        <div class="footer-links-group">
+          <h4>Open Source</h4>
+          <a href="https://github.com/jonahthan433/CortexOS_" target="_blank" rel="noopener">CortexOS GitHub</a>
+          <a href="docs.html">Documentation</a>
+          <a href="#changelog">Changelog</a>
+          <a href="#contributing">Contributing</a>
+        </div>
+        <div class="footer-links-group">
+          <h4>Company</h4>
+          <a href="#about">About</a>
+          <a href="#blog">Blog</a>
+          <a href="mailto:enterprise@cortexcloud.online">Contact</a>
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 CortexCloud. Built on <a href="https://github.com/jonahthan433/CortexOS_" target="_blank" rel="noopener">CortexOS</a> — MIT License.</p>
+        <p class="footer-note">Privacy-first. No telemetry. No tracking. Your data stays yours.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script>
+    // =====================================================
+    // DOCS PAGE INTERACTIVE SCRIPTS
+    // =====================================================
+
+    // 1. Mobile Documentation Accordion Menu
+    const mobileNav = document.getElementById('mobile-docs-nav');
+    const mobileNavTitle = document.getElementById('mobile-nav-title');
+    if (mobileNav && mobileNavTitle) {
+      mobileNavTitle.addEventListener('click', () => {
+        mobileNav.classList.toggle('open');
+      });
+      // Close dropdown when selecting links
+      mobileNav.querySelectorAll('.mobile-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+          mobileNav.classList.remove('open');
+          const text = link.textContent;
+          mobileNavTitle.textContent = `Browse: ${text}`;
+        });
+      });
+    }
+
+    // 2. Sidebar active highlighting on scroll
+    const docSections = document.querySelectorAll('article.docs-content section[id]');
+    const sidebarLinks = document.querySelectorAll('.docs-sidebar .sidebar-link');
+    
+    if (docSections.length && sidebarLinks.length) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            sidebarLinks.forEach(link => {
+              if (link.getAttribute('href') === `#${id}`) {
+                link.classList.add('active');
+                // Center the active sidebar element
+                link.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              } else {
+                link.classList.remove('active');
+              }
+            });
+            // Update mobile header text as well
+            if (mobileNavTitle) {
+              const activeLink = document.querySelector(`.mobile-link[href="#${id}"]`);
+              if (activeLink) {
+                mobileNavTitle.textContent = `Browse: ${activeLink.textContent}`;
+              }
+            }
+          }
+        });
+      }, {
+        threshold: 0.2,
+        rootMargin: '-100px 0px -40% 0px'
+      });
+
+      docSections.forEach(sec => observer.observe(sec));
+    }
+  </script>
+</body>
+</html>
