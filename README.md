@@ -5,7 +5,7 @@
 CortexCloud is the enterprise platform designed to run production-ready AI agents, secure pipelines, and local inference models entirely on your own infrastructure. Built on top of the open-source **CortexOS** core, it provides privacy-first automation, multi-agent coordination, and compliant scaling for regulated industries.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Local Inference](https://img.shields.io/badge/Inference-100%25%20Local-success)](https://github.com/jonahthan433/CortexOS_)
+[![Local Inference](https://img.shields.io/badge/Inference-100%25%20Local-success)](https://github.com/jonahthan433/CortexOS)
 [![Telemetry](https://img.shields.io/badge/Telemetry-Zero-success)](#)
 [![Security](https://img.shields.io/badge/Deployment-Air--Gapped%20Ready-brightgreen)](#)
 
@@ -47,10 +47,10 @@ Alternatively, to spin up the local microservice stack using **Docker Compose**:
 
 ```bash
 # Clone the open source repository
-git clone https://github.com/jonahthan433/CortexOS_
+git clone https://github.com/jonahthan433/CortexOS
 
 # Enter the repository
-cd CortexOS_
+cd CortexOS
 
 # Boot the isolated backend, database, and client containers
 docker compose up -d
